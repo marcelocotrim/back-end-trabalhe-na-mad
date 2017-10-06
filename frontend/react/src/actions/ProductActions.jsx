@@ -81,9 +81,10 @@ export function saveProductFailure(error) {
   };
 }
 
-export function saveProduct(objectId, name, manufactureDate, size, width, weight, categories) {
+export function saveProduct({ objectId, name, manufactureDate, size, width, weight, categories }) {
   return ((dispatch) => {
     dispatch({ type: SAVE_PRODUCT });
+    console.log({ manufactureDate, categories });
     if (!name || !manufactureDate) {
       dispatch(saveProductFailure());
     } else {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Col, Form, FormGroup, FormFeedback, Label, Input, Row } from 'reactstrap';
+import Select from 'react-select';
 import { fetchCategories, changeProductField, resetProductForm, saveProduct, fetchProducts, hideFilter } from './../actions';
 
 class ProductForm extends Component {
@@ -25,7 +26,7 @@ class ProductForm extends Component {
     e.preventDefault();
     window.scrollTo(0, 0);
     const { objectId, name, manufactureDate, size, width, weight, categories } = this.props;
-    this.props.saveProduct(objectId, name, manufactureDate, size, width, weight, categories);
+    this.props.saveProduct({ objectId, name, manufactureDate, size, width, weight, categories });
   }
   onClickSearch(e) {
     e.preventDefault();
@@ -46,7 +47,9 @@ class ProductForm extends Component {
       isLoading,
       save,
     } = this.props;
-    console.log(this.props)
+    const options = [];
+    allCategories.map((category => options.push({ value: category.name, label: category.name })));
+    console.log(options)
     return (
       <Form style={{ marginBottom: 40 }}>
         <FormGroup color={submit === true && !name ? 'danger' : null}>
@@ -89,25 +92,24 @@ class ProductForm extends Component {
         </Row>
         <FormGroup>
           <Label for="categories">Categorias</Label>
-          <Input
-            id="categories"
-            type="select"
-            multiple
-            onClick={() => {
-              this.props.changeProductField({
-                prop: 'categories',
-                value: $('#categories').val(),
-              });
+          <Select
+            name="categories"
+            // value="one"
+            placeholder="Selecione a(s) categoria(s)"
+            multi
+            simpleValue
+            options={options}
+            onChange={(e) => {
+              console.log(e);
+              // this.props.changeProductField({
+              //   prop: 'categories',
+              //   value: $('#categories').val(),
+              // });
             }}
-          >
-            {
-              allCategories.map(category => (
-                <option key={category.objectId}>{category.name}</option>
-              ))
-            }
-          </Input>
+          />
         </FormGroup>
         <Button
+          id="button"
           color="primary"
           className="float-right"
           disabled={isLoading}
@@ -161,8 +163,8 @@ function mapDispatchToProps(dispatch) {
     resetProductForm: () => {
       dispatch(resetProductForm());
     },
-    saveProduct: (objectId, name, manufactureDate, size, width, weight, categories) => {
-      dispatch(saveProduct(objectId, name, manufactureDate, size, width, weight, categories));
+    saveProduct: (params) => {
+      dispatch(saveProduct(params));
     },
     fetchProducts: (filters) => {
       dispatch(fetchProducts(filters));

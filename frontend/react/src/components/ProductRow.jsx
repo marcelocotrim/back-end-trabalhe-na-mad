@@ -10,7 +10,7 @@ function ProductRow(props) {
         {product.name}
       </td>
       <td>
-        {product.manufactureDate && moment(product.manufactureDate).format('DD/MM/YYYY')}
+        {product.manufactureDate && moment.utc(product.manufactureDate.iso).format('DD/MM/YYYY')}
       </td>
       <td>
         {product.size}

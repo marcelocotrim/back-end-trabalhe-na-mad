@@ -17,6 +17,7 @@ function NavigationBar(props) {
         <NavbarBrand style={{ marginLeft: 15 }} href={'/'}>Teste 2</NavbarBrand>
         <Nav className="float-right">
           <Button
+            id="productModalButton"
             color="primary"
             style={{ marginRight: 15 }}
             onClick={(e) => {

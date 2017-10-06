@@ -40,6 +40,7 @@ class Home extends Component {
           </Alert>
         }
         <Button
+          id="filterButton"
           outline
           color="primary"
           style={{ marginBottom: 15 }}
