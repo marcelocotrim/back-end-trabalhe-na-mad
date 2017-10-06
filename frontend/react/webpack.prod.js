@@ -37,7 +37,7 @@ module.exports = {
     new webpack.optimize.AggressiveMergingPlugin(),
   ],
   output: {
-    path: __dirname + '/public',
+    path: `${__dirname}/public`,
     filename: '[name].[chunkhash:8].js',
     publicPath: '/',
   },

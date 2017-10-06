@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Col, Form, FormGroup, FormFeedback, Label, Input, Row } from 'reactstrap';
-import Select from 'react-select';
-import { fetchCategories, changeProductField, resetProductForm, saveProduct, fetchProducts, hideFilter } from './../actions';
+import { Button, Col, Form, FormGroup, Label, Input, Row } from 'reactstrap';
+import { changeProductField, resetProductForm, saveProduct, fetchProducts, hideFilter } from './../actions';
 
 class ProductForm extends Component {
   constructor(props) {
@@ -12,9 +11,6 @@ class ProductForm extends Component {
     this.onChange = this.onChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
     this.onClickSearch = this.onClickSearch.bind(this);
-  }
-  componentWillMount() {
-    this.props.fetchCategories();
   }
   componentWillUnmount() {
     this.props.resetProductForm();
@@ -47,25 +43,22 @@ class ProductForm extends Component {
       isLoading,
       save,
     } = this.props;
-    const options = [];
-    allCategories.map((category => options.push({ value: category.name, label: category.name })));
-    console.log(options)
     return (
       <Form style={{ marginBottom: 40 }}>
         <FormGroup color={submit === true && !name ? 'danger' : null}>
           <Label for="name">Nome</Label>
-          <Input id="name" name="name" type="text" value={name} state={submit === true && !name ? 'danger' : null} onChange={this.onChange} />
+          <Input id="name" name="name" type="text" value={name} onChange={this.onChange} />
           {submit === true &&
-            <FormFeedback hidden={name}>{'Esse campo é obrigatório'}</FormFeedback>
+            <div hidden={name} className="form-control-feedback">{'Esse campo é obrigatório'}</div>
           }
         </FormGroup>
         <Row>
           <Col>
-            <FormGroup color={submit === true && !manufactureDate ? 'danger' : null}>
+            <FormGroup>
               <Label for="manufactureDate">Data de Fabricação</Label>
-              <Input id="manufactureDate" type="date" value={manufactureDate} state={submit === true && !manufactureDate ? 'danger' : null} onChange={this.onChange} />
+              <Input id="manufactureDate" type="date" value={manufactureDate} onChange={this.onChange} />
               {submit === true &&
-                <FormFeedback hidden={manufactureDate}>{'Esse campo é obrigatório'}</FormFeedback>
+                <div hidden={manufactureDate} className="form-control-feedback">{'Esse campo é obrigatório'}</div>
               }
             </FormGroup>
           </Col>
@@ -92,21 +85,24 @@ class ProductForm extends Component {
         </Row>
         <FormGroup>
           <Label for="categories">Categorias</Label>
-          <Select
+          <Input
+            id={save ? 'saveCategories' : 'categories'}
             name="categories"
-            // value="one"
-            placeholder="Selecione a(s) categoria(s)"
-            multi
-            simpleValue
-            options={options}
-            onChange={(e) => {
-              console.log(e);
-              // this.props.changeProductField({
-              //   prop: 'categories',
-              //   value: $('#categories').val(),
-              // });
+            type="select"
+            multiple
+            onClick={() => {
+              this.props.changeProductField({
+                prop: 'categories',
+                value: $(save ? '#saveCategories' : '#categories').val(),
+              });
             }}
-          />
+          >
+            {
+              allCategories.map(category => (
+                <option key={category.objectId}>{category.name}</option>
+              ))
+            }
+          </Input>
         </FormGroup>
         <Button
           id="button"
@@ -123,7 +119,6 @@ class ProductForm extends Component {
 }
 
 ProductForm.propTypes = {
-  fetchCategories: PropTypes.func.isRequired,
   changeProductField: PropTypes.func.isRequired,
   resetProductForm: PropTypes.func.isRequired,
   saveProduct: PropTypes.func.isRequired,
@@ -154,9 +149,6 @@ function mapStateToProps({ productReducer }) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCategories: () => {
-      dispatch(fetchCategories());
-    },
     changeProductField: (field) => {
       dispatch(changeProductField(field));
     },

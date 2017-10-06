@@ -80,7 +80,6 @@ export default (state = INITIAL_STATE, action) => {
     case RESET_PRODUCT_FORM:
       return {
         ...state,
-        allCategories: [],
         objectId: '',
         name: '',
         manufactureDate: '',

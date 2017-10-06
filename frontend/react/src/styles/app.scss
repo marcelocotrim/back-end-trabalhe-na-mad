@@ -1,6 +1,5 @@
 @import 'base/variables';
 @import '~bootstrap/scss/bootstrap';
-@import '~react-select/dist/react-select';
 
 a,
 a:active,
@@ -11,6 +10,11 @@ a:visited {
 
 .btn {
   cursor: pointer;
+}
+
+.form-control-feedback {
+  font-size: small;
+  color: red;
 }
 
 .container {

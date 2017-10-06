@@ -13,7 +13,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      Popper: 'popper.js/dist/umd/popper.js',
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -31,7 +30,7 @@ module.exports = {
     }),
   ],
   output: {
-    path: __dirname + '/public',
+    path: `${__dirname}/public`,
     filename: '[name].js',
     publicPath: '/',
   },

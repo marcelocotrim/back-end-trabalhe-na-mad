@@ -6,7 +6,7 @@ import ReactLoading from 'react-loading';
 import ProductRow from './ProductRow';
 import ProductModal from './ProductModal';
 import ProductForm from './ProductForm';
-import { fetchProducts, showFilter, hideFilter } from './../actions';
+import { fetchCategories, fetchProducts, showFilter, hideFilter } from './../actions';
 
 class Home extends Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class Home extends Component {
     };
   }
   componentWillMount() {
+    this.props.fetchCategories();
     this.props.fetchProducts({});
   }
   toggle() {
@@ -146,6 +147,7 @@ class Home extends Component {
 }
 
 Home.propTypes = {
+  fetchCategories: PropTypes.func.isRequired,
   fetchProducts: PropTypes.func.isRequired,
   showFilter: PropTypes.func.isRequired,
   hideFilter: PropTypes.func.isRequired,
@@ -160,6 +162,9 @@ function mapStateToProps({ productsReducer }) {
 }
 function mapDispatchToProps(dispatch) {
   return {
+    fetchCategories: () => {
+      dispatch(fetchCategories());
+    },
     fetchProducts: (filters) => {
       dispatch(fetchProducts(filters));
     },
